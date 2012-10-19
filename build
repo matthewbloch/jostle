@@ -1,0 +1,15 @@
+#!/bin/sh
+# could be more efficient...
+
+for bin in testmain jostle ; do
+
+  gcc -Wall -g --std=gnu99 \
+    -o $bin \
+    src/$bin.c \
+    src/psmove.c \
+    src/sound.c \
+    src/usb.c \
+    -lusb -lbluetooth -lpthread -lm -lSDL_mixer
+
+done
+

@@ -1,0 +1,226 @@
+jostle
+======
+A hi-tech playground game / ice-breaker inspired by Die Gute Fabrik's 
+unpublished "Johann Sebastian Joust" (http://gutefabrik.com/joust.html)
+
+Originally hacked together by Matthew Bloch <matthew@bytemark.co.uk>
+July-August 2012
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    (NB the above does not necessarily apply to the samples)
+
+For fun you will need:
+* 1 Bluetooth-enabled Linux laptop or Raspberry Pi
+* 2-7 Playstation Move controllers
+* 2-7 players
+
+This is a hack that could use a little smoothing.  git repository put 
+together for the Manchester Raspberry Pi Jam 5 which I couldn't quite 
+make it to - good luck guys!  
+
+http://madlab.org.uk/content/manchester-raspberry-jam-5/
+
+Instructions
+------------
+For now, assuming you are going to build and run in the same place, on a
+Debian-based system:
+
+* Run "apt-get install gcc libusb-dev libsdl-mixer1.2-dev libbluetooth-dev"
+  which is all the build pre-requisites.
+* Run "./build" to build the game
+
+Before you run it you need to nobble your system's Bluetooth slightly:
+
+* Open /etc/bluetooth/main.conf on your system
+* Find the [General] section of the file  
+* Ensure there is a line there that reads:
+    DisablePlugins = network,input
+* Restart your bluetooth service (/etc/init.d/bluetooth restart on Debian)
+* This disables your Bluetooth input devices' normal operation!  (mouse, 
+  keyboard). But if you want them back later you can simply undo the edit 
+  and restart again.
+
+All of the above works just fine on the Raspberry Pi (see below).
+
+Pairing up
+----------
+You need to program each controller with the address of the laptop or 
+Raspberry Pi device that you want to play with.  You only need to do this 
+once per controller.
+
+* Make sure your computer's sound output is working and turned up.
+* Run "./jostle", as root or Bluetooth-enabled user.  It will just hang there
+    if it's working.
+* Plug in your first PS Move controller.  If everything is working you should
+    hear a short beep and a message like this:
+
+      USB: PS MOVE
+      Changing master from 00:05:16:63:6f:aa to cc:af:78:ec:60:cd
+      Now press the PS button.
+* Great!  For now just disconnect it and plug the next controller in, so each
+    one is programmed with your laptop or Linux device's Bluetooth address as
+    its master.  You only have to do this once (unless you re-pair your 
+    controller with a Playstation, but why would you want to do that).
+* When that's done for all your controllers, you can start.  Oh, make sure
+    your sound is working.
+
+Connecting the controllers
+--------------------------
+Once all your controllers are paired, you can leave the program running for
+as long as you want to play.
+
+Press the "PS" button on each controller to connect it up.  For each 
+controller you should see:
+* the red light blink for a few seconds;
+* the console say "Incoming connection...";
+* the bulb on the controller will light up, you will hear a "pow" noise, and 
+    the controller will vibrate.
+If that doesn't happen, your controller won't work, and you will need to pair
+it (see above).
+
+If the red light on the PS Move controller turns out, it means the controller 
+needs reconnecting (it might have run out of batteries, or you moved it out of 
+range of the Bluetooth master).
+
+If all the red lights go out at once, it means the game has crashed, will need
+restarting, and all the controllers reconnecting.
+
+Playing!
+--------
+So assuming all your controllers are paired up and laid out on the floor, or 
+hung  on pegs, each one will glow gently with a different colour - this is the 
+"attract" mode.
+
+Decide who's playing, pick up a controller and get ready!  As you pick up each 
+controller it will probably make a "pow" noise and its light will go out.  
+Hold it steady!  When everyone is ready to start, hold the "T" button (the
+trigger underneath) while holding the controller very still.  The game will 
+only start when everyone holds still for about 8 seconds.
+
+A beat will fade in, and all the bulbs will jump up to full brightness.  
+Now you're playing!  Hold your controller steady, and jostle your opponents'.
+The winner is  the last person with their light on.  You can turn an 
+opponent's  light out by  jostling their controller.  Their light will turn
+out and you'll  hear the "pow" noise when it's been jostled enough.
+
+The controllers' sensitivity will vary depending on the beat of the music -  
+slow beats mean you need to move very slowly, fast beats mean you can make 
+your move, but will have to hit hard.
+
+When the last person is left standing, their controller will flash random 
+colours and play the jingly winner sound.  That person is the best!  You should
+then all drink your weak lemon drink (or save it until later), and play again.
+
+Changing the sensitivity
+------------------------
+During the "attract" mode, one player can set the sensitivity by:
+* staying very still;
+* holding the "triangle" button on the controller;
+* moving the controller a short amount;
+* letting go of the "triangle" button.
+
+This will set the _most_ sensitive setting, for the slowest possible beat.  
+As the beat speeds up, this sensitivity will be multiplied.  You can see the 
+sensititivy you're setting as the console as you  hold the triangle button - 
+more movement means it's generally less sensitive.  Just tapping the triangle
+button without any movement will make it very sensitive, probably unplayable
+
+The console will also show you what multiple of this reference sensitivity is 
+currently detected on each controller, so if you think it's wrong, you can 
+just try again.
+
+Volume
+------
+During "attract" mode you can press "circle" to cycle the volume from quiet 
+to loud if you don't have any better control.
+
+Troubleshooting
+---------------
+* I've paired my controller via USB, but when I press the PS button, nothing 
+  happens
+  (or I get a "pairing request" dialogue box)
+
+This is probably because you've forgotten to nobble your system's Bluetooth 
+daemon, as described under "Instructions".  Ahem.
+
+* My PS Move controller won't stay paired for long, it keeps turning off.
+
+Maybe it has run out of batteries!  They take about 2 hours to charge over 
+USB, and last for 8-10 hours of play.  Or you've moved out of range.
+
+* I can't get 7 people to stand still to start the game.
+
+You're on your own here, though in a party setting I'd suggest turning the 
+volume up and trying to instil some discipline.  It's a game in itself.
+
+* The controllers' lights are slow to react when someone is knocked out.
+
+I know, sorry.  I think I am using the bluetooth protocol inefficiently by 
+continually sending updates; I don't know it well enough or the code that 
+drives it unfortunately. The accompanying sound should always be on time 
+though.
+
+Raspberry Pi notes
+------------------
+The game builds and runs fine on Raspbian (http://www.raspbian.org/) running
+on a Raspberry Pi (http://www.raspberrypi.org/).
+
+I also used a Bluetooth dongle I found in the drawer, and a set of USB-powered
+speakers from the supermarket, and a mobile phone charger, e.g. I'm pretty
+sure these would do:
+
+* http://www.amazon.co.uk/TINY-WIRELESS-BLUETOOTH-ADAPTER-DONGLE/dp/B0013BFQUE
+* http://www.amazon.co.uk/Logitech-OEM-S150-Speaker-System/dp/B000XUQ2LI/
+* http://www.amazon.co.uk/gp/product/B003H5V8G0/
+
+The batteries lasted 4h15m with the game in in use for about half that time, 
+though given the lag on the bluetooth comms, I'd make sure everyone can hear
+the beat and sound effects over your party - USB-powered might not be loud
+enough.
+
+To do (fun)
+-----------
+* Replace the unlicensed sound samples, credit the Creative Commons ones,
+  or just come up with a more consistent set of beats!
+* Invent some new game modes, though all of these make it less obvious how 
+  to play:
+  * temporary invulnerability by pushing a button;
+  * upside down world - where you have to keep waggling the controller, rather
+      than keep it still - maybe this a sound signals this mode?
+  * the "chosen one" - only one person is vulnerable at a time, shown by their
+      brighter light.  They have to fend off attacks from everyone else (who is
+      invulnerable) for five  seconds before the light moves on.  Maybe 
+      dangerous;
+  * (other light-signalled roles ?);
+* Research whether it's possible to make lights more responsive, fixing lag;
+* A nice front-end to configure game modes, rules, tournaments and so on.
+  
+To do (boring)
+--------------
+* Do a nice Debian package to make it easier to rebuild & distribute.
+* Rewrite the Bluetooth to play nicely with the system stack.
+* Port to OS X & Windows.
+
+Credits
+-------
+http://gutefabrik.com/joust.html for the inspiration and glowing write-ups that 
+made me want to copy it.
+
+http://www.pabr.org/linmctool/ for the clever code that does the Bluetooth comms
+and decoding.
+
+My company birthday party http://blog.bytemark.co.uk/2012/08/16/big-hoopla for making
+me want to write it.
+
